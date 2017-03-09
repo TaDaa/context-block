@@ -22,7 +22,31 @@ npm install --save-dev context-block
 #####Block
 Blocks are how you define the behavior for a context associated with "name"
 
-* Block (namespace,[fn,delay]) - returns a context for "name" .  If fn is not specified, invoke dismiss, join, or stop. 
+* block (namespace,[fn,delay]) - returns a context for "name" .  If fn is not specified, invoke dismiss, join, or stop. 
+````
+//these two blocks share the same "test" namespace
+block('test',({reject,resolve}) => {
+  setTimeout(()=>resolve(1))
+}).then((v)=>{
+  //never called
+}).catch((v)=>{
+  console.log(v); //dismissed
+});
+
+//alternative tagged literal syntax
+block `test` (({reject,resolve}) => {
+  setTimeout(()=>resolve(1))
+}).then((v)=>{
+  console.log(v); //1
+}).catch((v)=>{
+  //never called
+}));
+
+OUTPUT:
+dismissed
+1
+````
+
 * Block.dismiss (namespace, fn[,delay]) - returns a context of type "DISMISS"
 * Block.stop (namespace, fn[,delay]) - returns a context of type "STOP"
 * Block.join (namespace, fn[,delay]) - returns a context of type "JOIN"
@@ -35,9 +59,9 @@ All block types accept the following arguments:
 
 <table>
 <tr><td>namespace</td><td>required</td><td style="font-size:small">Namespaces are symbols or strings used to bind a single function that resolves or rejects associated contexts.  Contexts define their behavior when a namespace collision occurs.  After a context resolves, rejects, or stops, the namespace will become free again.</td></tr>
-<tr><td>fn</td><td>optional</td><td>function that will be called.  A normal block will always call "fn" and all existing contexts will determine whether
+<tr><td>fn</td><td>optional</td><td>function that will be called.  "fn" supports using ({reject,resolve}) arguments, return a promise, async/await, or executing a generator.  A normal block will always call "fn" and all existing contexts will determine whether
   or not to share the result, stop, or dismiss themselves.  A reverse block "fn" will be called only if the namespace is not already in use and 
-  if a namespace is already in use, the reverse context will determine whether or not to share, stop, or dismiss.
+  if a namespace is already in use, the reverse context will determine whether or not to share, stop, or dismiss. 
 </td></tr>
 <tr><td>delay</td><td>optional</td><td>time(ms) to wait before invoking "fn"</td></tr>
 </table>
