@@ -48,8 +48,80 @@ dismissed
 ````
 
 * Block.dismiss (namespace, fn[,delay]) - returns a context of type "DISMISS"
+````
+//these two blocks share the same "test" namespace
+block.dismiss('test',({reject,resolve}) => {
+  setTimeout(()=>resolve(1))
+}).then((v)=>{
+  //never called
+}).catch((v)=>{
+  console.log(v); //dismissed
+});
+
+//alternative tagged literal syntax
+block.dismiss `test` (({reject,resolve}) => {
+  setTimeout(()=>resolve(1))
+}).then((v)=>{
+  console.log(v); //1
+}).catch((v)=>{
+  //never called
+}));
+
+OUTPUT:
+dismissed
+1
+````
+
 * Block.stop (namespace, fn[,delay]) - returns a context of type "STOP"
+````
+//these two blocks share the same "test" namespace
+block.stop('test',({reject,resolve}) => {
+  setTimeout(()=>resolve(1))
+}).then((v)=>{
+  //never called
+}).catch((v)=>{
+  //never called
+});
+
+//alternative tagged literal syntax
+block.stop `test` (({reject,resolve}) => {
+  setTimeout(()=>resolve(1))
+}).then((v)=>{
+  console.log(v); //1
+}).catch((v)=>{
+  //never called
+}));
+
+OUTPUT:
+1
+````
+
 * Block.join (namespace, fn[,delay]) - returns a context of type "JOIN"
+````
+//these two blocks share the same "test" namespace
+block.join('test',({reject,resolve}) => {
+  setTimeout(()=>resolve(1))
+}).then((v)=>{
+  console.log(v) //2
+}).catch((v)=>{
+  //never called
+});
+
+//alternative tagged literal syntax
+block.join `test` (({reject,resolve}) => {
+  setTimeout(()=>resolve(2))
+}).then((v)=>{
+  console.log(v); //2
+}).catch((v)=>{
+  //never called
+}));
+
+OUTPUT:
+2
+2
+````
+
+
 * Block.reverse (namespace, [fn,delay]) - returns a reverse context for "name".  If fn is not specified, invoke dismiss, join, or stop.
 * Block.reverse.dismiss | Block.dismiss.reverse (namespace, fn[,delay]) - returns a reverse context of type "DISMISS"
 * Block.reverse.stop | Block.stop.reverse (namespace, fn[,delay]) - returns a reverse context of type "STOP"
