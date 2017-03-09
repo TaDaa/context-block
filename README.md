@@ -22,6 +22,18 @@ npm install --save-dev context-block
 #####Block
 Blocks are how you define the behavior for a context associated with "name"
 
+All block types accept the following arguments:
+
+<table>
+<tr><td>namespace</td><td>required</td><td style="font-size:small">Namespaces are symbols or strings used to bind a single function that resolves or rejects associated contexts.  Contexts define their behavior when a namespace collision occurs.  After a context resolves, rejects, or stops, the namespace will become free again.</td></tr>
+<tr><td>fn</td><td>optional</td><td>function that will be called.  "fn" supports using ({reject,resolve}) arguments, return a promise, async/await, or executing a generator.  A normal block will always call "fn" and all existing contexts will determine whether
+  or not to share the result, stop, or dismiss themselves.  A reverse block "fn" will be called only if the namespace is not already in use and 
+  if a namespace is already in use, the reverse context will determine whether or not to share, stop, or dismiss. 
+</td></tr>
+<tr><td>delay</td><td>optional</td><td>time(ms) to wait before invoking "fn"</td></tr>
+</table>
+
+
 * block (namespace,[fn,delay]) - returns a context for "name" .  If fn is not specified, invoke dismiss, join, or stop. 
 ````
 //these two blocks share the same "test" namespace
@@ -123,20 +135,107 @@ OUTPUT:
 
 
 * Block.reverse (namespace, [fn,delay]) - returns a reverse context for "name".  If fn is not specified, invoke dismiss, join, or stop.
+````
+//these two blocks share the same "test" namespace
+block.reverse('test',({reject,resolve}) => {
+  setTimeout(()=>resolve(1))
+}).then((v)=>{
+  console.log(v);
+}).catch((v)=>{
+  //never called
+});
+
+//alternative tagged literal syntax
+block.reverse `test` (({reject,resolve}) => {
+  setTimeout(()=>resolve(2))
+}).then((v)=>{
+  //never called
+}).catch((v)=>{
+  console.log(v); //dismissed
+}));
+
+OUTPUT:
+dismissed
+1
+````
+
 * Block.reverse.dismiss | Block.dismiss.reverse (namespace, fn[,delay]) - returns a reverse context of type "DISMISS"
+````
+//these two blocks share the same "test" namespace
+block.reverse.dismiss('test',({reject,resolve}) => {
+  setTimeout(()=>resolve(1))
+}).then((v)=>{
+  console.log(v); //1
+}).catch((v)=>{
+  //never called
+});
+
+//alternative tagged literal syntax
+block.reverse.dismiss `test` (({reject,resolve}) => {
+  setTimeout(()=>resolve(2))
+}).then((v)=>{
+  //never called
+}).catch((v)=>{
+  console.log(v); //dismissed
+}));
+
+OUTPUT:
+dismissed
+1
+````
+
 * Block.reverse.stop | Block.stop.reverse (namespace, fn[,delay]) - returns a reverse context of type "STOP"
+````
+//these two blocks share the same "test" namespace
+block.reverse.stop('test',({reject,resolve}) => {
+  setTimeout(()=>resolve(1))
+}).then((v)=>{
+  console.log(v);
+}).catch((v)=>{
+  //never called
+});
+
+//alternative tagged literal syntax
+block.reverse.stop `test` (({reject,resolve}) => {
+  setTimeout(()=>resolve(2))
+}).then((v)=>{
+  //never called
+}).catch((v)=>{
+  //never called
+}));
+
+OUTPUT:
+1
+````
+
 * Block.reverse.join | Block.join.reverse (namespace, fn[,delay]) - returns a reverse context of type "JOIN"
+````
+//these two blocks share the same "test" namespace
+block.reverse.stop('test',({reject,resolve}) => {
+  setTimeout(()=>resolve(1))
+}).then((v)=>{
+  console.log(v);
+}).catch((v)=>{
+  //never called
+});
 
-All block types accept the following arguments:
+//alternative tagged literal syntax
+block.reverse.stop `test` (({reject,resolve}) => {
+  setTimeout(()=>resolve(2))
+}).then((v)=>{
+  console.log(v);
+}).catch((v)=>{
+  //never called
+}));
 
-<table>
-<tr><td>namespace</td><td>required</td><td style="font-size:small">Namespaces are symbols or strings used to bind a single function that resolves or rejects associated contexts.  Contexts define their behavior when a namespace collision occurs.  After a context resolves, rejects, or stops, the namespace will become free again.</td></tr>
-<tr><td>fn</td><td>optional</td><td>function that will be called.  "fn" supports using ({reject,resolve}) arguments, return a promise, async/await, or executing a generator.  A normal block will always call "fn" and all existing contexts will determine whether
-  or not to share the result, stop, or dismiss themselves.  A reverse block "fn" will be called only if the namespace is not already in use and 
-  if a namespace is already in use, the reverse context will determine whether or not to share, stop, or dismiss. 
-</td></tr>
-<tr><td>delay</td><td>optional</td><td>time(ms) to wait before invoking "fn"</td></tr>
-</table>
+OUTPUT:
+1
+1
+````
+
+
+
+
 
 ####Context
 Contexts extend from promises.  They integrate with Promise.all, Promise.race and much more!  Contexts work under the premise
