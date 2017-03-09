@@ -1,0 +1,47 @@
+{
+  "name": "context-block",
+  "version": "1.0.0",
+  "description": "Contextualized promises by name and symbol",
+  "main": "libs/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TaDaa/context-block.git"
+  },
+  "keywords": [
+    "async",
+    "asynchronous",
+    "context",
+    "manage",
+    "manager",
+    "managed",
+    "context",
+    "contexts",
+    "promise",
+    "await",
+    "coroutine",
+    "co",
+    "copromise",
+    "generator",
+    "yield",
+    "first",
+    "last",
+    "steal",
+    "join"
+  ],
+  "author": "= <trevor002@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TaDaa/context-block/issues"
+  },
+  "homepage": "https://github.com/TaDaa/context-block#readme",
+  "devDependencies": {
+    "detect-arguments": "^1.0.1",
+    "mocha": "^3.2.0"
+  }
+}
