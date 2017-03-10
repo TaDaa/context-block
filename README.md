@@ -30,7 +30,7 @@ npm install --save-dev context-block
 
 <br>
 <br>
-<div id="api" >
+<div id="api" ></div>
 
 ### API Reference
 * <a href="#block">Block<a>
@@ -41,7 +41,7 @@ npm install --save-dev context-block
 <br>
 <div id="block" ></div>
   
- - <a href="#block">#<b>Block</b></a>
+ - #### <a href="">#</a><b>Block</b></a>
  
 
 	Blocks are segments of code associated with a name. Blocks can either be Forward or Reverse.  Forward      blocks ALWAYS execute the latest code segment.  Reverse blocks only execute the latest code segment if one is not already scheduled to run.
