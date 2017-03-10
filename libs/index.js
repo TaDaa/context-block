@@ -21,7 +21,7 @@ function get_context (type,_context,...args) {
             if (typeof args[i] === 'string' || typeof args[i] === 'symbol') {
                 name = args[i++];
             } 
-            if (typeof args[i] === 'function') {
+            if (typeof args[i] === 'function' || args[i] instanceof Promise) {
                 fn = args[i++];
             } 
             timeout = args[i] | 0;
@@ -43,7 +43,7 @@ function get_context (type,_context,...args) {
         type
     });
 
-    if (type && typeof fn === 'function') {
+    if (type && fn) {
         context[type](fn,timeout);
     }
 
