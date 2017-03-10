@@ -45,7 +45,7 @@ npm install --save-dev context-block
 
 	Blocks are segments of code associated with a name. Blocks can either be Forward or Reverse.  Forward      blocks ALWAYS execute the latest code segment.  Reverse blocks only execute the latest code segment if one is not already scheduled to run.
   
-	<br>Blocks return <a href="#context">Contexts</a> or <a href="#reverse">ReverseContexts</a> (which extend Promise) and associate the behavior of an asynchronous action with a "name."  A name can be either string or symbol, allowing asynchronous behaviors to be managed
+	<br>Blocks return <a href="#context">Contexts</a> or <a href="#reverse">ReverseContexts</a> (which extend Promise) and associate the behavior of an asynchronous action with a <a href="#name">name</a>.  A <a href="#name">name</a> can be either string or symbol, allowing asynchronous behaviors to be managed
 at various hierarchies (component vs global levels).  Blocks also support a tagged literal format to help differentiate Blocks from other code (<a href="#ex-tagged-literal">example</a>)
 
 	<br>There are three forward and reverse block behavior functions defined.  <br>
@@ -77,9 +77,9 @@ at various hierarchies (component vs global levels).  Blocks also support a tagg
 	Contexts are the returned value from a <a href="#block">Block</a> and are not intended to be constructed directly. 
 Contexts extend from promises and integrate Promise functionality such as Promise.all, Promise.race and much more!  
 
-	The premise behind Contexts are that multiple contexts can potentially exist for a given named block.  However, each context decides how to act in the event multiple Contexts of the same name are created.  Context actions include:
-	* <b>dismiss</b><br>  Rejects if another Context of the same name is created<br><br>
-	* <b>stop</b><br>  Does not resolve or reject if another Context of the same is created<br><br>
+	The premise behind Contexts are that multiple contexts can potentially exist for a given <a href="#block">Block</a> <a href="#name">name</a>.  However, each context decides how to act in the event multiple Contexts of the same name are created.  Context actions include:
+	* <b>dismiss</b><br>  Rejects if another Context of the same <a href="#name">name</a> is created<br><br>
+	* <b>stop</b><br>  Does not resolve or reject if another Context of the same <a href="#name">name</a> is created<br><br>
 	* <b>join</b>  Resolves or rejects with the latest result<br><br>
 
 	Examples coming soon!
@@ -90,17 +90,17 @@ Contexts extend from promises and integrate Promise functionality such as Promis
 
 - #### <a href="#">#</a> ReverseContext <i>extends Context</i>
 
-	ReverseContexts take Contexts a step further by deciding the action if a Block already exists.
+	ReverseContexts take <a href="#context">Contexts</a> a step further by deciding the action if a <a href="#block">Block</a> already exists.
 
 	ReverseContexts work under the premise
-that priority lies with an earlier Context, which naturally changes the meaning of dismiss, stop, and join:
+that priority lies with an earlier <a href="#context">Context</a>, which naturally changes the meaning of dismiss, stop, and join:
 <br>
 	* <b>dismiss</b><br>
-Rejects if another Context of the same name is already active
+Rejects if another <a href="#context">Context<a> of the same <a href="#name">name</a> is already active
 <br><br>
 	* <b>stop</b><br>
-Does not resolve or reject if another Context of the same name is already active<br><br>
+Does not resolve or reject if another <a href="#context">Context<a> of the same <a href="#name">name</a> is already active<br><br>
 	* <b>join</b><br>
-Resolves or rejects with the result of an already active Context.  Additionally can resolve or reject with a later Context's result.<br><br>
+Resolves or rejects with the result of an already active <a href="#context">Context<a>.  Additionally can resolve or reject with a later Context's result.<br><br>
 
 	Examples coming soon!
