@@ -18,12 +18,13 @@ class Reverse extends Context {
         } 
         return super.join(...args);
     }
-    dismiss (...args) {
+    dismiss (fn,timeout) {
         if (contexts[this._name]) {
-            this._reject(DISMISSED);
+            const reject = () => this._reject(DISMISSED); 
+            (process !== 'undefined' && !timeout) ? process.nextTick(reject) : setTimeout(reject,timeout);
             return this;
         } 
-        return super.dismiss(...args);
+        return super.dismiss(fn,timeout);
     }
     stop (...args) {
         if (contexts[this._name]) {

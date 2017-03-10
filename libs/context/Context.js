@@ -32,13 +32,11 @@ class Context extends Promise {
     }
     catch (...args) {
         const result = super.catch(...args);
-        result._catches = true;
         result._reject = this._reject;
         result._resolve = this._resolve;
         result._name = this._name;
         result._type = this._type;
         result._config = this._config;
-        result._config.catches = true;
         return result;
     }
     name (name) {
