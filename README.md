@@ -6,6 +6,7 @@ Contextualized promise blocks by name and symbol.  Supports async, promises, gen
 <a href="#what">What/Why</a><br>
 <a href="#install">Install</a><br>
 <a href="#api">API Reference</a>
+<a href="#examples">Examples</a>
 </div>
 <br>
 
@@ -116,4 +117,186 @@ Does not resolve or reject if another <a href="#context">Context<a> of the same 
 	* <b>join</b><br>
 Resolves or rejects with the result of an already active <a href="#context">Context</a>.  Additionally can resolve or reject with a later Context's result.<br><br>
 
-	----------------------
+----------------------
+<br>
+<br>
+<div id="examples"></div>
+
+###Examples
+
+<div id="ex-tagged-literal"></div>
+####Tagged Literal (dismiss)
+````
+const block = require('context-block');
+
+//tagged literal block with unspecified dismiss,stop,join defaults to dismiss.
+block `test` (({reject,resolve})=>{
+	//never called
+}).then(()=>{
+	//never called
+}).catch((v)=>{
+	console.error(v); // "dismissed"
+});
+
+//tagged literal block with specified method
+//context will be dismissed as another context will activate with the same name
+block.dismiss `test` (()=>{
+	return new Promise((resolve,reject)=>{
+		resolve('hello world');
+	});
+}).catch ((v)=>{
+	console.error(v); //v is "dismissed"
+}); 
+
+//untagged equivalents for reference
+//another context of the same is defined again, so nothing nothing will get called
+block.stop('test',({reject,resolve})=> {
+	//never called
+}).catch((v)=>{
+    	//never called
+});
+
+//join context will result in "world" because the last context resolves "world"
+block('test').join(({reject,resolve})=>{
+	resolve('hello');
+}).then((v)=>{
+    	console.error(v); //v is "world"
+});
+
+block.join `test` (({reject,resolve})=>{
+	resolve('world');
+}).then((v)=>{
+    	console.error(v); //v is "world"
+});
+
+OUTPUT:
+dismissed
+dismissed
+world
+world
+````
+
+<div id="ex-promise"></div>
+####fn is a promise
+````
+block.dismiss `test` (new Promise((resolve,reject)=>{
+	resolve('hi');
+})).then((v)=>{
+	console.error(v); //v is "hi"
+});
+
+
+OUTPUT:
+hi
+````
+
+
+<div id="ex-detect"></div>
+####fn synchronously references resolve/reject arguments
+````
+//note the es6 destructure syntax
+//<b>if you specify resolve, reject arguments, you must resolve the context using them!!!</b>
+block `test` (({resolve,reject})=>{
+	resolve(1);
+}).then((v)=>{
+	console.error(v); //v is 1
+});
+
+OUTPUT:
+1
+
+````
+
+
+<div id="ex-ret-promise"></div>
+####fn returns a promise
+````
+block `test` (()=>{
+	return new Promise((resolve,reject)=>{
+		resolve(2);
+	});
+}).then((v)=>{
+	console.error(v); //v is 2
+});
+
+OUTPUT:
+1
+
+````
+
+
+
+<div id="ex-async"></div>
+####fn uses async/await
+````
+async function getSomething () {
+	return new Promise((resolve,reject)=>{
+		resolve('banana');
+	});
+}
+block `test` (async ()=>{
+	return await getSomething('for my monkey');
+}).then((v)=>{
+	console.error(v); //v is "banana"
+});
+
+OUTPUT:
+banana
+
+````
+
+
+
+<div id="ex-generator"></div>
+####fn is a generator (behaves as a coroutine)
+````
+
+block `test` (function * () {
+	yield new Promise((resolve,reject)=>{
+		setTimeout(()=>resolve(1),20)
+	});
+	yield 2;
+	yield new Promise((resolve,reject)=>{
+		resolve(3);
+	});
+	return 4
+}).then((v)=>{
+	console.error(v); //v is [1,2,3,4]
+});
+
+OUTPUT:
+1,2,3,4
+
+````
+
+
+
+
+
+<div id="ex-integrate"></div>
+####fn is a generator (behaves as a coroutine)
+````
+Promise.all([
+	block `test1` (({resolve,reject})=>{resolve(1);}),
+	block `test2` (({resolve,reject})=>{resolve(2);})
+]).then((v)=>{
+	console.log(v);
+});
+
+
+OUTPUT:
+1,2
+````
+````
+Promise.race([
+	block `test1` (({resolve,reject})=>{resolve(1);}),
+	block `test2` (({resolve,reject})=>{setTimeout(()=>resolve(2));})
+]).then((v)=>{
+	console.log(v);
+});
+
+
+OUTPUT:
+1
+
+````
