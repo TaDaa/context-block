@@ -1,6 +1,6 @@
 
 
-# context-block
+#context-block
 Contextualized promise blocks by name and symbol.  Supports async, promises, generators, and manual reject/resolve.
 <div>
 <a href="#what">What/Why</a><br>
@@ -8,6 +8,9 @@ Contextualized promise blocks by name and symbol.  Supports async, promises, gen
 <a href="#api">API Reference</a>
 </div>
 <br>
+
+----------------------
+
 
 <div id="what"></div>
 
@@ -21,6 +24,9 @@ Context-block provides a developer friendly syntax that will ensure multiple of 
 
 <br>
 
+----------------------
+
+
 <div id="install"></div>
 
 ###Install
@@ -28,8 +34,13 @@ Context-block provides a developer friendly syntax that will ensure multiple of 
 npm install --save-dev context-block
 ````
 
+
 <br>
+
+----------------------
+
 <div id="api" ></div>
+
 
 ### API Reference
 * <a href="#block">Block<a>
@@ -63,11 +74,13 @@ at various hierarchies (component vs global levels).  Blocks also support a tagg
 <tr><td id="#fn">fn</td><td >optional</td><td>function that will be called.  "fn" can either be a promise (<a href="#ex-promise">example</a>),  a function with ({reject,resolve}) arguments (<a href="#ex-detect">example</a>), return a promise (<a href="#ex-ret-promise">example</a>), async/await (<a href="#ex-async">example</a>), or a generator (<a href="#ex-generator">example</a>).  A Forward Block will always call "fn".  Reverse blocks only call "fn" if the name is not already in use.
 </td></tr>
 <tr><td>delay</td><td >optional</td><td >time(ms) to wait before invoking "fn"</td></tr>
-</table>
+</table><br>
 
 	Examples coming soon!
+<br>
+<br>
 
-
+----------------------
 
 <div id="context" ></div>
 
@@ -82,7 +95,7 @@ Contexts extend from promises and integrate Promise functionality such as Promis
 	* <b>stop</b><br>  Does not resolve or reject if another Context of the same <a href="#name">name</a> is created<br><br>
 	* <b>join</b>  Resolves or rejects with the latest result<br><br>
 
-	Examples coming soon!
+----------------------
 <br>
 <br>
 
@@ -101,6 +114,6 @@ Rejects if another <a href="#context">Context<a> of the same <a href="#name">nam
 	* <b>stop</b><br>
 Does not resolve or reject if another <a href="#context">Context<a> of the same <a href="#name">name</a> is already active<br><br>
 	* <b>join</b><br>
-Resolves or rejects with the result of an already active <a href="#context">Context<a>.  Additionally can resolve or reject with a later Context's result.<br><br>
+Resolves or rejects with the result of an already active <a href="#context">Context</a>.  Additionally can resolve or reject with a later Context's result.<br><br>
 
-	Examples coming soon!
+	----------------------
