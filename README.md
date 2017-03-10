@@ -274,7 +274,7 @@ OUTPUT:
 
 
 <div id="ex-integrate"></div>
-####fn is a generator (behaves as a coroutine)
+####Contexts integrate with promise functionalities (Promise.all & Promise.race)
 ````
 Promise.all([
 	block `test1` (({resolve,reject})=>{resolve(1);}),
