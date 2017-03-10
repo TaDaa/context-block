@@ -21,7 +21,7 @@ class Reverse extends Context {
     dismiss (fn,timeout) {
         if (contexts[this._name]) {
             const reject = () => this._reject(DISMISSED); 
-            (process !== 'undefined' && !timeout) ? process.nextTick(reject) : setTimeout(reject,timeout);
+            (process !== 'undefined' && !timeout) ? process.nextTick(reject) : setTimeout(reject,timeout|0);
             return this;
         } 
         return super.dismiss(fn,timeout);

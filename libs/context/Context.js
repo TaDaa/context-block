@@ -99,7 +99,7 @@ class Context extends Promise {
                         }
                     }
                 };
-                process !== 'undefined' ? process.nextTick(do_promise) : setTimeout(do_promise);
+                (process !== 'undefined' && !timeout) ? process.nextTick(do_promise) : setTimeout(do_promise,timeout|0);
             });
         } else if (fn instanceof Promise) {
             promise = fn;

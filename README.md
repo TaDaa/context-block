@@ -152,14 +152,14 @@ block.dismiss `test` (()=>{
 
 //untagged equivalents for reference
 //another context of the same is defined again, so nothing nothing will get called
-block.stop(\'test\',({reject,resolve})=> {
+block.stop('test',({reject,resolve})=> {
 	//never called
 }).catch((v)=>{
     	//never called
 });
 
 //join context will result in "world" because the last context resolves "world"
-block(\'test\').join(({reject,resolve})=>{
+block('test').join(({reject,resolve})=>{
 	resolve('hello');
 }).then((v)=>{
     	console.error(v); //v is "world"
