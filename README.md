@@ -7,6 +7,7 @@ Contextualized promise blocks by name and symbol.  Supports async, promises, gen
 <a href="#install">Install</a><br>
 <a href="#api">API Reference</a>
 </div>
+<br>
 
 <div id="what">
 
@@ -21,15 +22,17 @@ Context-block provides a developer friendly syntax that will ensure multiple of 
 </div>
 <br>
 
-<div id="install"/>
+<div id="install">
 
-### Install
+###Install
 ````
 npm install --save-dev context-block
 ````
+</div<
+
 <br>
 <br>
-<div id="api" />
+<div id="api" >
 
 ### API Reference
 * <a href="#block">Block<a>
@@ -105,3 +108,4 @@ Does not resolve or reject if another Context of the same name is already active
 Resolves or rejects with the result of an already active Context.  Additionally can resolve or reject with a later Context's result.<br><br>
 
 	Examples coming soon!
+	</div>
