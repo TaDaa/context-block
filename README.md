@@ -5,7 +5,7 @@ Contextualized promise blocks by name and symbol.  Supports async, promises, gen
 <div>
 <a href="#what">What/Why</a><br>
 <a href="#install">Install</a><br>
-<a href="#api">API Reference</a>
+<a href="#api">API Reference</a><br>
 <a href="#examples">Examples</a>
 </div>
 <br>
@@ -52,7 +52,7 @@ npm install --save-dev context-block
 <br>
 <div id="block" ></div>
   
- - #### <a href="">#</a> <b>Block</b></a>
+ - <h4><a href="">#</a> <b>Block</b></a></h4>
  
 
 	Blocks are segments of code associated with a name. Blocks can either be Forward or Reverse.  Forward      blocks ALWAYS execute the latest code segment.  Reverse blocks only execute the latest code segment if one is not already scheduled to run.
@@ -70,14 +70,15 @@ at various hierarchies (component vs global levels).  Blocks also support a tagg
 
 	Blocks accept the following arguments:
 	<br>
-		<table >
-<tr><td id="#name">name</td><td>required</td><td >Names are symbols or strings used to bind a single function that resolves or rejects associated contexts.  Contexts define their behavior when a naming collision occurs.  After a context resolves, rejects, or stops, the name will become free again.</td></tr>
-<tr><td id="#fn">fn</td><td >optional</td><td>function that will be called.  "fn" can either be a promise (<a href="#ex-promise">example</a>),  a function with ({reject,resolve}) arguments (<a href="#ex-detect">example</a>), return a promise (<a href="#ex-ret-promise">example</a>), async/await (<a href="#ex-async">example</a>), or a generator (<a href="#ex-generator">example</a>).  A Forward Block will always call "fn".  Reverse blocks only call "fn" if the name is not already in use.
+<table>
+<tbody>
+<tr><td><div id="name">name</div></td><td>required</td><td >Names are symbols or strings used to bind a single function that resolves or rejects associated contexts.  Contexts define their behavior when a naming collision occurs.  After a context resolves, rejects, or stops, the name will become free again.</td></tr>
+<tr><td><div id="fn">fn</div></td><td >optional</td><td>function that will be called.  "fn" can either be a promise (<a href="#ex-promise">example</a>),  a function with ({reject,resolve}) arguments (<a href="#ex-detect">example</a>), return a promise (<a href="#ex-ret-promise">example</a>), async/await (<a href="#ex-async">example</a>), or a generator (<a href="#ex-generator">example</a>).  A Forward Block will always call "fn".  Reverse blocks only call "fn" if the name is not already in use.
 </td></tr>
-<tr><td>delay</td><td >optional</td><td >time(ms) to wait before invoking "fn"</td></tr>
+<tr><td><div id="delay">delay</div></td><td >optional</td><td >time(ms) to wait before invoking "fn"</td></tr>
+</tbody>
 </table><br>
 
-	Examples coming soon!
 <br>
 <br>
 
@@ -86,10 +87,10 @@ at various hierarchies (component vs global levels).  Blocks also support a tagg
 <div id="context" ></div>
 
 
-- #### <a href="">#</a> Context <i>extends Promise</i>
+- <h4><a href="">#</a> Context <i>extends Promise</i></h4>
 
 	Contexts are the returned value from a <a href="#block">Block</a> and are not intended to be constructed directly. 
-Contexts extend from promises and integrate Promise functionality such as Promise.all, Promise.race and much more!  
+Contexts extend from promises and integrate Promise functionality such as Promise.all, Promise.race (<a href="#ex-integrate">example</a>) and much more!  
 
 	The premise behind Contexts are that multiple contexts can potentially exist for a given <a href="#block">Block</a> <a href="#name">name</a>.  However, each context decides how to act in the event multiple Contexts of the same name are created.  Context actions include:
 	* <b>dismiss</b><br>  Rejects if another Context of the same <a href="#name">name</a> is created<br><br>
@@ -100,9 +101,9 @@ Contexts extend from promises and integrate Promise functionality such as Promis
 <br>
 <br>
 
-<div id="reversecontext" ></div>
+<div id="reverse" ></div>
 
-- #### <a href="#">#</a> ReverseContext <i>extends Context</i>
+- <h4><a href="#">#</a> ReverseContext <i>extends Context</i></h4>
 
 	ReverseContexts take <a href="#context">Contexts</a> a step further by deciding the action if a <a href="#block">Block</a> already exists.
 
@@ -110,10 +111,10 @@ Contexts extend from promises and integrate Promise functionality such as Promis
 that priority lies with an earlier <a href="#context">Context</a>, which naturally changes the meaning of dismiss, stop, and join:
 <br>
 	* <b>dismiss</b><br>
-Rejects if another <a href="#context">Context<a> of the same <a href="#name">name</a> is already active
+Rejects if another <a href="#context">Context</a> of the same <a href="#name">name</a> is already active
 <br><br>
 	* <b>stop</b><br>
-Does not resolve or reject if another <a href="#context">Context<a> of the same <a href="#name">name</a> is already active<br><br>
+Does not resolve or reject if another <a href="#context">Context</a> of the same <a href="#name">name</a> is already active<br><br>
 	* <b>join</b><br>
 Resolves or rejects with the result of an already active <a href="#context">Context</a>.  Additionally can resolve or reject with a later Context's result.<br><br>
 
@@ -125,7 +126,8 @@ Resolves or rejects with the result of an already active <a href="#context">Cont
 ###Examples
 
 <div id="ex-tagged-literal"></div>
-####Tagged Literal (dismiss)
+<h4>Tagged Literal</h4>
+
 ````
 const block = require('context-block');
 
@@ -150,14 +152,14 @@ block.dismiss `test` (()=>{
 
 //untagged equivalents for reference
 //another context of the same is defined again, so nothing nothing will get called
-block.stop('test',({reject,resolve})=> {
+block.stop(\'test\',({reject,resolve})=> {
 	//never called
 }).catch((v)=>{
     	//never called
 });
 
 //join context will result in "world" because the last context resolves "world"
-block('test').join(({reject,resolve})=>{
+block(\'test\').join(({reject,resolve})=>{
 	resolve('hello');
 }).then((v)=>{
     	console.error(v); //v is "world"
@@ -177,7 +179,8 @@ world
 ````
 
 <div id="ex-promise"></div>
-####fn is a promise
+<h4>fn is a promise</h4>
+
 ````
 block.dismiss `test` (new Promise((resolve,reject)=>{
 	resolve('hi');
@@ -192,7 +195,8 @@ hi
 
 
 <div id="ex-detect"></div>
-####fn synchronously references resolve/reject arguments
+<h4>fn synchronously references resolve/reject arguments</h4>
+
 ````
 //note the es6 destructure syntax
 //if you specify resolve, reject arguments, you must resolve the context using them!!!
@@ -209,7 +213,8 @@ OUTPUT:
 
 
 <div id="ex-ret-promise"></div>
-####fn returns a promise
+<h4>fn returns a promise</h4>
+
 ````
 block `test` (()=>{
 	return new Promise((resolve,reject)=>{
@@ -227,7 +232,8 @@ OUTPUT:
 
 
 <div id="ex-async"></div>
-####fn uses async/await
+<h4>fn uses async/await</h4>
+
 ````
 async function getSomething () {
 	return new Promise((resolve,reject)=>{
@@ -248,9 +254,9 @@ banana
 
 
 <div id="ex-generator"></div>
-####fn is a generator (behaves as a coroutine)
-````
+<h4>fn is a generator (behaves as a coroutine)</h4>
 
+````
 block `test` (function * () {
 	yield new Promise((resolve,reject)=>{
 		setTimeout(()=>resolve(1),20)
@@ -274,7 +280,8 @@ OUTPUT:
 
 
 <div id="ex-integrate"></div>
-####Contexts integrate with promise functionalities (Promise.all & Promise.race)
+<h4>Contexts integrate with promise functionalities (Promise.all & Promise.race)</h4>
+
 ````
 Promise.all([
 	block `test1` (({resolve,reject})=>{resolve(1);}),
@@ -286,8 +293,9 @@ Promise.all([
 
 OUTPUT:
 1,2
-````
-````
+
+------------
+
 Promise.race([
 	block `test1` (({resolve,reject})=>{resolve(1);}),
 	block `test2` (({resolve,reject})=>{setTimeout(()=>resolve(2));})
