@@ -1,9 +1,9 @@
 
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css" type="text/css" rel="stylesheet"></link>
 
 <div id="top" style="background:#aaf;z-index:3;position:relative;background-image:linear-gradient(#66f,transparent);background:#aaf;color:white;padding:10px;">
 
-# context-block
+#context-block
 Contextualized promise blocks by name and symbol.  Supports async, promises, generators, and manual reject/resolve.
 </div>
 <div style="top:20px;margin:0 auto;padding:10px;z-index:3;padding-bottom:0px;font-size:medium;background:white;border-bottom:solid 1px #aaf;width:auto;color:red;background:transparent;pointer-events:none;">
