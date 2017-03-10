@@ -9,7 +9,7 @@ Contextualized promise blocks by name and symbol.  Supports async, promises, gen
 </div>
 <br>
 
-<div id="what">
+<div id="what"></div>
 
 ###What/Why?
 context-block is intended to assist in managing promises and asynchronous behaviors. 
@@ -19,16 +19,14 @@ user input. Maybe you are writing server logic and you want to ensure that you a
 
 Context-block provides a developer friendly syntax that will ensure multiple of the same asynchronous activities are not occurring.
 
-</div>
 <br>
 
-<div id="install">
+<div id="install"></div>
 
 ###Install
 ````
 npm install --save-dev context-block
 ````
-</div<
 
 <br>
 <br>
@@ -41,7 +39,7 @@ npm install --save-dev context-block
 
 
 <br>
-<div id="block" >
+<div id="block" ></div>
   
  - <a href="#block">#<b>Block</b></a>
  
@@ -70,9 +68,10 @@ at various hierarchies (component vs global levels).  Blocks also support a tagg
 
 
 Examples coming soon!
-</div>
 
-<p id="context" >
+
+
+<div id="context" ></div>
 
 
 - #### <a href="">#</a> Context <i>extends Promise</i>
@@ -86,11 +85,10 @@ Contexts extend from promises and integrate Promise functionality such as Promis
 	* <b>join</b>  Resolves or rejects with the latest result<br><br>
 
 	Examples coming soon!
-</p>
 <br>
 <br>
 
-<div id="reversecontext" >
+<div id="reversecontext" ></div>
 
 - #### <a href="#">#</a> ReverseContext <i>extends Context</i>
 
@@ -108,4 +106,3 @@ Does not resolve or reject if another Context of the same name is already active
 Resolves or rejects with the result of an already active Context.  Additionally can resolve or reject with a later Context's result.<br><br>
 
 	Examples coming soon!
-	</div>
