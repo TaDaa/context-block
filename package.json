@@ -1,6 +1,6 @@
 {
   "name": "context-block",
-  "version": "1.0.16",
+  "version": "1.0.19",
   "description": "Contextualized promises by name and symbol",
   "main": "libs/index.js",
   "directories": {
