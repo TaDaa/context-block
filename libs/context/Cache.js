@@ -43,7 +43,7 @@ class Cache {
                     promise = promises[i];
                     type = promise._type;
                     if (type !== JOIN) {
-                        type === DISMISS && promise._reject(DISMISSED);
+                        type === DISMISS && promise._config.catches && promise._reject(DISMISSED);
                     } else {
                         reduced.push(promise);
                     }
