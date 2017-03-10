@@ -2,18 +2,11 @@
 
 # context-block
 Contextualized promise blocks by name and symbol.  Supports async, promises, generators, and manual reject/resolve.
-</div>
-<div>
-<br>
 <div>
 <a href="#what">What/Why</a><br>
 <a href="#install">Install</a><br>
 <a href="#api">API Reference</a>
 </div>
-</div>
-</div>
-
-<br>
 
 <div id="what">
 
@@ -45,13 +38,14 @@ npm install --save-dev context-block
 
 
 <br>
-<p id="block" >
+<div id="block" >
   
- - #### <a href="#">#</a> Block
+ - <a href="#block">#<b>Block</b></a>
+ 
 
 	Blocks are segments of code associated with a name. Blocks can either be Forward or Reverse.  Forward      blocks ALWAYS execute the latest code segment.  Reverse blocks only execute the latest code segment if one is not already scheduled to run.
   
-	<br>Blocks return <a href="context">Contexts</a> or <a href="#reverse">ReverseContexts</a> (which extend Promise) and associate the behavior of an asynchronous action with a "name."  A name can be either string or symbol, allowing asynchronous behaviors to be managed
+	<br>Blocks return <a href="#context">Contexts</a> or <a href="#reverse">ReverseContexts</a> (which extend Promise) and associate the behavior of an asynchronous action with a "name."  A name can be either string or symbol, allowing asynchronous behaviors to be managed
 at various hierarchies (component vs global levels).  Blocks also support a tagged literal format to help differentiate Blocks from other code (<a href="#ex-tagged-literal">example</a>)
 
 	<br>There are three forward and reverse block behavior functions defined.  <br>
@@ -73,7 +67,7 @@ at various hierarchies (component vs global levels).  Blocks also support a tagg
 
 
 Examples coming soon!
-</p>
+</div>
 
 <p id="context" >
 
