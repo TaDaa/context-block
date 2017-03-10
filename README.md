@@ -195,7 +195,7 @@ hi
 ####fn synchronously references resolve/reject arguments
 ````
 //note the es6 destructure syntax
-//<b>if you specify resolve, reject arguments, you must resolve the context using them!!!</b>
+//if you specify resolve, reject arguments, you must resolve the context using them!!!
 block `test` (({resolve,reject})=>{
 	resolve(1);
 }).then((v)=>{
