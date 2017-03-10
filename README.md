@@ -2,7 +2,7 @@
 Contextualized promise blocks by name and symbol.  Supports async, promises, generators, and manual reject/resolve.
 
 ####What/Why?
-context-block is intended to assist in managing asynchronous behaviors. 
+context-block is intended to assist in managing asynachronous behaviors. 
 
 Imagine you want to update a UI based on the result of a service request - or multiple service requests without blocking
 user input. Maybe you are writing server logic and you want to ensure that you avoid sending multiple of database lookups simultaneously.
@@ -210,53 +210,128 @@ OUTPUT:
 
 * Block.reverse.join | Block.join.reverse (namespace, fn[,delay]) - returns a reverse context of type "JOIN"
 ````
-//these two blocks share the same "test" namespace
-block.reverse.stop('test',({reject,resolve}) => {
-  setTimeout(()=>resolve(1))
-}).then((v)=>{
-  console.log(v);
-}).catch((v)=>{
-  //never called
-});
 
-//alternative tagged literal syntax
-block.reverse.stop `test` (({reject,resolve}) => {
-  setTimeout(()=>resolve(2))
-}).then((v)=>{
-  console.log(v);
-}).catch((v)=>{
-  //never called
-}));
 
-OUTPUT:
-1
-1
+
+<div id="top" style="background:#aaf;z-index:3;position:relative;background-image:linear-gradient(#66f,transparent);background:#aaf;color:white;padding:10px;">
+
+# context-block
+Contextualized promise blocks by name and symbol.  Supports async, promises, generators, and manual reject/resolve.
+</div>
+<div style="top:20px;margin:0 auto;padding:10px;z-index:3;padding-bottom:0px;font-size:medium;background:white;border-bottom:solid 1px #aaf;width:auto;color:red;background:transparent;pointer-events:none;">
+<br>
+<div style="display:block;position:relative;height:auto;width:auto;padding-bottom:10px;padding-top:10px;pointer-events:all">
+<a href="#what">What/Why</a>&nbsp;
+<a href="#install">Install</a>&nbsp;
+<a href="#api">API Reference</a>
+</div>
+</div>
+</div>
+
+<br>
+
+<div id="what" style="background:#f7f7ff;padding:10px">
+
+### What/Why?
+context-block is intended to assist in managing promises and asynchronous behaviors. 
+
+Imagine you want to update a UI based on the result of a service request - or multiple service requests without blocking
+user input. Maybe you are writing server logic and you want to ensure that you avoid sending multiple of database lookups simultaneously.
+
+Context-block provides a developer friendly syntax that will ensure multiple of the same asynchronous activities are not occurring.
+
+</div>
+<br>
+
+<div id="install"/>
+
+### Install
 ````
+npm install --save-dev context-block
+````
+<br>
+<br>
+<br>
+<div id="api" />
+
+### API Reference
+* <a href="#block">Block<a>
+* <a href="#block">Context<a>
+* <a href="#block">ReverseContext<a>
+
+<div id="block" style="padding:10px 10px 10px 10px;background:#fff;margin:40px 10px 0px 10px;border:solid 1px #aaf">
+
+#### <div style="display:inline-block;color:#aaf">#</div> Block
+
+Blocks are segments of code associated with a name. Blocks can either be Forward or Reverse.  Forward blocks ALWAYS execute the latest code segment.  Reverse blocks only execute the latest code segment if one is not already scheduled to run.
+
+Blocks return <a href="context">Contexts</a> or <a href="#reverse">ReverseContexts</a> (which extend Promise) and associate the behavior of an asynchronous action with a "name."  A name can be either string or symbol, allowing asynchronous behaviors to be managed
+at various hierarchies (component vs global levels).  Blocks also support a tagged literal format to help differentiate Blocks from other code (<a href="#ex-tagged-literal">example</a>)
+
+There are three forward and reverse block behavior functions defined.  <br>
+* <b>block.dismiss(<a href="#name">name</a>[,<a href="#fn">fn</a>,<a href="#delay">delay</a>])</b> <br> Returns a <a href="#context">Context</a> for <a href="#name">name</a> and executes <a href="#fn">fn</a>.  If another block of the same <a href="#name">name</a> is created, the returned <a href="#context">Context</a> will be dismissed (rejected).<br><br>
+* <b>block.stop(<a href="#name">name</a>[,<a href="#fn">fn</a>,<a href="#delay">delay</a>])</b><br>Returns a <a href="#context">Context</a> for <a href="#name">name</a> and executes <a href="#fn">fn</a>.  If another block of the same <a href="#name">name</a> is created, the returned <a href="#context">Context</a> will NOT be resolved or rejected.<br><br>
+* <b>block.join(<a href="#name">name</a>[,<a href="#fn">fn</a>,<a href="#delay">delay</a>])</b> <br>Returns a <a href="#context">Context</a> for <a href="#name">name</a> and executes <a href="#fn">fn</a>.  If another block of the same <a href="#name">name</a> is created, the returned <a href="#context">Context</a> will resolve/reject with the result of the new block.<br><br>
+* <b>block.reverse.dismiss(<a href="#name">name</a>[,<a href="#fn">fn</a>,<a href="#delay">delay</a>])</b><br>Returns a <a href="#reverse">ReverseContext</a> for <a href="#name">name</a> and only executes <a href="#fn">fn</a> if another block of the same  <a href="#name">name</a>  is not already scheduled to activate.  If another block already exists, the returned <a href="#reverse">ReverseContext</a> will be automatically dismissed.<br><br>
+* <b>block.reverse.stop(<a href="#name">name</a>[,<a href="#fn">fn</a>,<a href="#delay">delay</a>])</b><br>Returns a <a href="#reverse">ReverseContext</a> for <a href="#name">name</a> and only executes <a href="#fn">fn</a> if another block of the same  <a href="#name">name</a>  is not already scheduled to activate.  If another block already exists, the returned <a href="#reverse">ReverseContext</a> will not resolve or reject<br><br>
+* <b>block.reverse.join(<a href="#name">name</a>[,<a href="#fn">fn</a>,<a href="#delay">delay</a>])</b><br>Returns a <a href="#reverse">ReverseContext</a> for <a href="#name">name</a> and only executes <a href="#fn">fn</a> if another block of the same <a href="#name">name</a> is not already scheduled to activate.  If another block already exists, the returned <a href="#reverse">ReverseContext</a> will resolve or reject with the result of the existing block.  Additionally, if a block of the same <a href="#name">name</a> is created, the returned <a href="#reverse">ReverseContext</a> will resolve/reject with the result of the new block  <br><br>
+
+
+<div style="padding:20px">
+Blocks accept the following arguments:
+<br>
+<br>
+<table >
+<tr><td id="#name">name</td><td style="font-size:small">required</td><td style="font-size:small">Names are symbols or strings used to bind a single function that resolves or rejects associated contexts.  Contexts define their behavior when a naming collision occurs.  After a context resolves, rejects, or stops, the name will become free again.</td></tr>
+<tr><td id="#fn">fn</td><td style="font-size:small">optional</td><td style="font-size:small">function that will be called.  "fn" can either be a promise (<a href="#ex-promise">example</a>),  a function with ({reject,resolve}) arguments (<a href="#ex-detect">example</a>), return a promise (<a href="#ex-ret-promise">example</a>), async/await (<a href="#ex-async">example</a>), or a generator (<a href="#ex-generator">example</a>).  A Forward Block will always call "fn".  Reverse blocks only call "fn" if the name is not already in use.
+</td></tr>
+<tr><td>delay</td><td style="font-size:small">optional</td><td style="font-size:small">time(ms) to wait before invoking "fn"</td></tr>
+</table>
+</div>
+
+
+Examples coming soon!
+</div>
+
+
+<div id="context" style="padding:10px 10px 10px 10px;background:#fff;margin:40px 10px 0px 10px;border:solid 1px #aaf">
+
+#### <div style="display:inline-block;color:#aaf">#</div> Context <span style="color:#aaf;font-weight:normal">extends Promise</span>
+
+
+Contexts are the returned value from a <a href="#block">Block</a> and are not intended to be constructed directly. 
+Contexts extend from promises and integrate Promise functionality such as Promise.all, Promise.race and much more!  
+
+The premise behind Contexts are that multiple contexts can potentially exist for a given named block.  However, each context decides how to act in the event multiple Contexts of the same name are created.  Context actions include:
+* <b>dismiss</b><br>  Rejects if another Context of the same name is created<br><br>
+* <b>stop</b><br>  Does not resolve or reject if another Context of the same is created<br><br>
+* <b>join</b>  Resolves or rejects with the latest result<br><br>
+
+Examples coming soon!
+</div>
+
+
+<div id="context" style="padding:10px 10px 10px 10px;background:#fff;margin:40px 10px 0px 10px;border:solid 1px #aaf">
+
+#### <div style="display:inline-block;color:#aaf">#</div> ReverseContext <span style="color:#aaf;font-weight:normal">extends Context</span>
+
+ReverseContexts take Contexts a step further by deciding the action if a Block already exists.
+
+
+ReverseContexts work under the premise
+that priority lies with an earlier Context, which naturally changes the meaning of dismiss, stop, and join:
+
+* <b>dismiss</b><br>
+Rejects if another Context of the same name is already active
+<br><br>
+* <b>stop</b><br>
+Does not resolve or reject if another Context of the same name is already active<br><br>
+* <b>join</b><br>
+Resolves or rejects with the result of an already active Context.  Additionally can resolve or reject with a later Context's result.<br><br>
 
 
 
+Examples coming soon!
+</div>
 
 
-####Context
-Contexts extend from promises.  They integrate with Promise.all, Promise.race and much more!  Contexts work under the premise
-that the most recently declared promise will activate and its "fn" will be called.  Pre-existing contexts will resolve depending on their context
-type (DISMISS, STOP, or JOIN).  
-
-* DISMISS - context will reject with "dismissed" value if another context of the same name is activated
-* STOP - context will not resolve or reject if another context of the same is activated
-* JOIN - context will resolve or reject with the result of a newer context of the same name
-
-####ReverseContext
-Reverse Contexts extend Context and also integrate with promise functionality.  ReverseContexts as their name suggests, work in reverse.
-The earliest declared Context will be treated as active.  If a context does not already exist, the ReverseContext will activate
-its "fn".  
-
-* DISMISS - context will reject with "dismissed" value if another context of the same name is already active
-* STOP - context will not reject or resolve if another context of the same name already exists
-* JOIN - context will resolve or reject with the result of a pre-existing context of the same name.  Additionally, if another context of the same 
-name is activated, it will share the result with the newer context.
-
-
-
-####Examples
-Coming soon!
