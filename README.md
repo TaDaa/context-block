@@ -11,7 +11,7 @@ Contextualized promise blocks by name and symbol.  Supports async, promises, gen
 
 <div id="what">
 
-### What/Why?
+###What/Why?
 context-block is intended to assist in managing promises and asynchronous behaviors. 
 
 Imagine you want to update a UI based on the result of a service request - or multiple service requests without blocking
